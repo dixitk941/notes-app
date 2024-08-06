@@ -1,0 +1,79 @@
+:root {
+  --primary-color: #25D366; /* WhatsApp green */
+  --secondary-color: #128C7E; /* Darker green for hover */
+  --background-color: #1e1e1e; /* Dark background */
+  --text-color: #e0e0e0; /* Light text */
+  --border-radius: 8px; /* Adjusted for a modern look */
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition-duration: 0.3s;
+}
+
+.note-creator {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--background-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  animation: fadeIn var(--transition-duration) ease;
+  max-height: 80vh; /* Added max-height */
+  overflow: auto; /* Added overflow */
+  color: var(--text-color);
+}
+
+.note-creator input,
+.note-creator select,
+.note-creator textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  background: var(--background-color);
+  color: var(--text-color);
+  transition: box-shadow var(--transition-duration), transform var(--transition-duration);
+  box-sizing: border-box; /* Ensure padding and border are included in the element's total width and height */
+}
+
+.note-creator input:focus,
+.note-creator select:focus,
+.note-creator textarea:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 10px var(--primary-color);
+  outline: none;
+}
+
+.note-creator button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color var(--transition-duration), transform var(--transition-duration), box-shadow var(--transition-duration);
+}
+
+.note-creator button:hover {
+  background-color: var(--secondary-color);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.note-creator button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

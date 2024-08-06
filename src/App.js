@@ -1,30 +1,36 @@
 // src/App.js
 import React, { useState } from 'react';
+import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import NoteCreator from './components/NoteCreator';
 import NoteList from './components/NoteList';
 import ContactForm from './components/ContactForm';
-import './App.css';
+import LoginModal from './components/LoginModal';
 
-const App = () => {
-    const [notes, setNotes] = useState([]);
+function App() {
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
 
-    const handleSaveNote = (note) => {
-        setNotes([...notes, note]);
+    const handleLoginClick = () => {
+        setIsLoginOpen(true);
+    };
+
+    const handleCloseLogin = () => {
+        setIsLoginOpen(false);
     };
 
     return (
         <div className="App">
-            <Header />
+            <Header onLoginClick={handleLoginClick} />
             <main>
-                <NoteCreator onSave={handleSaveNote} />
-                <NoteList notes={notes} />
+                <NoteCreator />
+                <NoteList />
                 <ContactForm />
             </main>
             <Footer />
+            {isLoginOpen && <LoginModal onClose={handleCloseLogin} />}
         </div>
     );
-};
+}
 
 export default App;

@@ -1,23 +1,56 @@
+:root {
+    --primary-color: #13aa52; /* MongoDB green */
+    --primary-color-hover: #0e8c42;
+    --background-color: #0f1b2b; /* Dark background */
+    --text-color: #e0e0e0; /* Light text */
+    --nav-link-color: #b0b0b0;
+    --nav-link-hover-color: #ffffff;
+    --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --transition: 0.3s ease-in-out;
+    --border-radius: 8px;
+    --font-family: 'Poppins', sans-serif;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background: linear-gradient(45deg, #ff6b6b, #f06595);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    color: white;
-    font-family: 'Poppins', sans-serif;
+    padding: 15px 30px;
+    background: var(--background-color);
+    box-shadow: var(--box-shadow);
+    font-family: var(--font-family);
 }
 
-.nav a {
-    margin: 0 1rem;
-    color: white;
+.header .title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.header nav a {
+    margin: 0 15px;
+    font-size: 16px;
+    color: var(--nav-link-color);
     text-decoration: none;
-    font-weight: bold;
-    transition: transform 0.3s ease;
+    transition: color var(--transition);
 }
 
-.nav a:hover {
-    transform: scale(1.1);
+.header nav a:hover {
+    color: var(--nav-link-hover-color);
+}
+
+.header nav button {
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.header nav button:hover {
+    background-color: var(--primary-color-hover);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

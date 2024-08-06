@@ -1,15 +1,35 @@
+/* src/components/Footer.css */
+:root {
+    --primary-color: #25D366; /* WhatsApp green */
+    --background-color: #1e1e1e; /* Dark background */
+    --text-color: #e0e0e0; /* Light text */
+    --link-color: #25D366;
+    --link-hover-color: #128C7E;
+    --box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+    --font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
 .footer {
-    padding: 1rem;
-    background: linear-gradient(45deg, #6a11cb, #2575fc);
-    color: white;
+    background: var(--background-color);
+    padding: 20px;
     text-align: center;
-    font-family: 'Poppins', sans-serif;
-    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px 10px 0 0;
+    box-shadow: var(--box-shadow);
+    font-family: var(--font-family);
+}
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-color);
 }
 
 .footer a {
-    color: white;
+    color: var(--link-color);
     text-decoration: none;
-    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.footer a:hover {
+    color: var(--link-hover-color);
+    text-decoration: underline;
 }

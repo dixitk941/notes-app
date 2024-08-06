@@ -1,0 +1,65 @@
+:root {
+    --primary-color: #25D366; /* WhatsApp green */
+    --secondary-color: #128C7E; /* Darker green for hover */
+    --background-color: #1e1e1e; /* Dark background */
+    --text-color: #e0e0e0; /* Light text */
+    --border-radius: 8px; /* Adjusted for a modern look */
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition-duration: 0.3s;
+    --note-item-hover-transform: translateY(-2px);
+    --note-item-hover-box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    --note-item-title-margin: 0 0 10px 0;
+    --note-item-title-font-size: 1.2rem;
+    --note-item-title-color: var(--primary-color);
+    --download-button-background: var(--primary-color);
+    --download-button-color: var(--text-color);
+    --download-button-padding: 10px 20px;
+    --download-button-border-radius: var(--border-radius);
+    --download-button-font-size: 1rem;
+    --download-button-hover-background: var(--secondary-color);
+    --transition: background var(--transition-duration), transform var(--transition-duration), box-shadow var(--transition-duration);
+}
+
+.note-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    background: var(--background-color);
+}
+
+.note-item {
+    flex: 1 1 calc(33.333% - 40px); /* 3 items per row with gap */
+    background: var(--background-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    transition: var(--transition);
+    color: var(--text-color);
+}
+
+.note-item:hover {
+    transform: var(--note-item-hover-transform);
+    box-shadow: var(--note-item-hover-box-shadow);
+}
+
+.note-item h3 {
+    margin: var(--note-item-title-margin);
+    font-size: var(--note-item-title-font-size);
+    color: var(--note-item-title-color);
+}
+
+.download-button {
+    display: inline-block;
+    background: var(--download-button-background);
+    color: var(--download-button-color);
+    padding: var(--download-button-padding);
+    border-radius: var(--download-button-border-radius);
+    font-size: var(--download-button-font-size);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.download-button:hover {
+    background: var(--download-button-hover-background);
+}

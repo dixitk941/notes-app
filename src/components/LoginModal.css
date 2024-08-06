@@ -1,0 +1,121 @@
+/* src/components/LoginModal.css */
+:root {
+    --primary-color: #ff6ec4;
+    --hover-color: #7873f5;
+    --disabled-color: #ccc;
+    --background-color: #2c2c2c;
+    --input-background-color: #3a3a3a;
+    --input-border-color: #444;
+    --text-color: #ffffff;
+    --error-color: #ff6e6e;
+    --box-shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: var(--background-color);
+    padding: 40px;
+    border-radius: 16px;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.modal-content .close:hover {
+    color: var(--primary-color);
+}
+
+.modal-content h2 {
+    margin: 0 0 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--text-color);
+    text-align: center;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content form input {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid var(--input-border-color);
+    border-radius: 8px;
+    background-color: var(--input-background-color);
+    color: var(--text-color);
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.modal-content form input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+button {
+    padding: 14px 20px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+button:disabled {
+    background-color: var(--disabled-color);
+    cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+    background-color: var(--hover-color);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px var(--box-shadow-color);
+}
+
+.modal-content .error {
+    color: var(--error-color);
+    margin-top: 10px;
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

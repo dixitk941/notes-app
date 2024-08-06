@@ -1,38 +1,49 @@
-// src/components/SignUp.js
+// src/components/Signup.js
 import React, { useState } from 'react';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase';
 
-const SignUp = ({ onSignUp }) => {
+const Signup = ({ closeModal }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
-    const handleSignUp = async () => {
+    const handleSignup = async (e) => {
+        e.preventDefault();
         try {
-            await auth.createUserWithEmailAndPassword(email, password);
-            onSignUp();
+            await createUserWithEmailAndPassword(auth, email, password);
+            closeModal();
         } catch (error) {
-            console.error("Error signing up:", error);
+            setError(error.message);
         }
     };
 
     return (
-        <div className="signup">
-            <h2>Sign Up</h2>
-            <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email"
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Password"
-            />
-            <button onClick={handleSignUp}>Sign Up</button>
+        <div className="modal">
+            <div className="modal-content">
+                <span className="close" onClick={closeModal}>&times;</span>
+                <h2>Sign Up</h2>
+                <form onSubmit={handleSignup}>
+                    <input 
+                        type="email" 
+                        placeholder="Email" 
+                        value={email} 
+                        onChange={(e) => setEmail(e.target.value)} 
+                        required 
+                    />
+                    <input 
+                        type="password" 
+                        placeholder="Password" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        required 
+                    />
+                    <button type="submit">Sign Up</button>
+                </form>
+                {error && <p className="error">{error}</p>}
+            </div>
         </div>
     );
 };
 
-export default SignUp;
+export default Signup;

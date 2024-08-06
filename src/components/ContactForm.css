@@ -1,0 +1,110 @@
+:root {
+    --primary-color: #13aa52; /* MongoDB green */
+    --primary-color-hover: #0e8c42;
+    --background-color: #0f1b2b; /* Dark background */
+    --text-color: #e0e0e0; /* Light text */
+    --label-color: #b0b0b0;
+    --input-background: #1c2a3a;
+    --input-border: #3a4a5a;
+    --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --transition: 0.3s ease-in-out;
+    --border-radius: 8px;
+    --font-family: 'Poppins', sans-serif;
+    --input-padding: 0.75rem;
+    --input-margin-bottom: 1rem;
+    --input-border-radius: 5px;
+    --input-font-size: 1rem;
+    --input-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --input-focus-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    animation: fadeIn 1s ease-in-out;
+}
+
+.contact-form {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    margin: 20px auto;
+    border-radius: var(--border-radius);
+    background: var(--background-color);
+    box-shadow: var(--box-shadow);
+    animation: fadeIn 0.5s ease-in-out;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.contact-form h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--label-color);
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: var(--input-padding);
+    margin-bottom: var(--input-margin-bottom);
+    border: 1px solid var(--input-border);
+    border-radius: var(--input-border-radius);
+    background-color: var(--input-background);
+    color: var(--text-color);
+    font-size: var(--input-font-size);
+    box-shadow: var(--input-box-shadow);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: var(--input-focus-box-shadow);
+    outline: none;
+}
+
+.contact-form button {
+    width: 100%;
+    padding: var(--input-padding);
+    border: none;
+    border-radius: var(--border-radius);
+    background-color: var(--primary-color);
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.contact-form button:hover {
+    background-color: var(--primary-color-hover);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.contact-form button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
