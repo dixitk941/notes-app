@@ -7,6 +7,7 @@ import NoteCreator from './components/NoteCreator';
 import NoteList from './components/NoteList';
 import ContactForm from './components/ContactForm';
 import LoginModal from './components/LoginModal';
+import Hero from './components/Hero';
 
 function App() {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -23,6 +24,7 @@ function App() {
         <div className="App">
             <Header onLoginClick={handleLoginClick} />
             <main>
+                <Hero />
                 <NoteCreator />
                 <NoteList />
                 <ContactForm />

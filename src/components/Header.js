@@ -54,7 +54,10 @@ const Header = ({ toggleSignUp }) => {
             {isLoginModalOpen && <LoginModal onClose={toggleLogin} onLoginSuccess={handleLoginSuccess} />}
             {error && <p className="error">{error}</p>}
         </header>
+        
     );
+    
 };
+
 
 export default Header;

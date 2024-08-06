@@ -1,0 +1,84 @@
+body {
+    font-family: 'Hack', monospace;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.hero {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #1f4037, #99f2c8);
+    color: white;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.typewriter h1 {
+    overflow: hidden;
+    border-right: .15em solid orange;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: .15em;
+    animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
+}
+
+.hero-description {
+    font-size: 1.2em;
+    margin: 20px 0;
+}
+
+.hero-button {
+    padding: 15px 30px;
+    font-size: 1em;
+    color: white;
+    background: #ff7e5f;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.hero-button:hover {
+    background: #feb47b;
+}
+
+.hero-info {
+    margin-top: 30px;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+.hero-features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0;
+}
+
+.hero-features li {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+}
+
+.hero-features i {
+    color: #ff7e5f;
+    margin-right: 10px;
+}

@@ -1,81 +1,52 @@
 import React, { useState } from 'react';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db, storage, auth } from '../firebase';
-import { ref, uploadString, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 import './NoteCreator.css';
 
-const categories = {
-  'Computer Science': [
-    { name: 'Python' },
-    { name: 'Java' },
-    { name: 'C' },
-    { name: 'C++' },
-    { name: 'HTML' },
-    { name: 'CSS' },
-    { name: 'JavaScript' },
-    { name: 'Other' }
-  ],
-  'Class 1-8': [
-    { name: 'Science' },
-    { name: 'Social Science' },
-    { name: 'Other' }
-  ],
-  'Class 9-12': [
-    { name: 'Physics' },
-    { name: 'Chemistry' },
-    { name: 'Biology' },
-    { name: 'Other' }
-  ]
-};
-
 const NoteCreator = () => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
+  const [content, setContent] = useState('');
+  const [file, setFile] = useState(null);
   const [message, setMessage] = useState('');
+  const [categories, setCategories] = useState({
+    Work: [{ name: 'Meeting' }, { name: 'Project' }],
+    Personal: [{ name: 'Diary' }, { name: 'Goals' }],
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = auth.currentUser;
-    if (user) {
-      try {
-        const storageRef = ref(storage, `notes/${user.uid}/${title}-${Date.now()}.txt`);
-        await uploadString(storageRef, content);
-        const downloadURL = await getDownloadURL(storageRef);
+    try {
+      const storage = getStorage();
+      let fileURL = '';
 
-        await addDoc(collection(db, 'notes'), {
-          title,
-          content: downloadURL,
-          category,
-          subcategory,
-          timestamp: serverTimestamp(),
-          userId: user.uid
-        });
-
-        setTitle('');
-        setContent('');
-        setCategory('');
-        setSubcategory('');
-        setMessage('Note saved successfully!');
-      } catch (error) {
-        console.error('Error submitting note:', error);
-        setMessage('Error submitting note.');
+      if (file) {
+        const storageRef = ref(storage, `uploads/${file.name}`);
+        await uploadBytes(storageRef, file);
+        fileURL = await getDownloadURL(storageRef);
       }
+
+      // Save note data along with fileURL if available
+      const noteData = {
+        category,
+        subcategory,
+        content,
+        fileURL,
+      };
+
+      // Save noteData to your database
+      console.log('Note saved:', noteData);
+      setMessage('Note saved successfully!');
+    } catch (error) {
+      console.error('Error saving note:', error);
+      setMessage('Error saving note.');
     }
   };
 
   return (
-    <div className="note-creator max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg animate-fadeIn">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          className="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:shadow-lg transition-shadow"
-        />
+    <div className="note-creator">
+      <form onSubmit={handleSubmit} className="w-full p-6 bg-white rounded-lg shadow-md">
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -103,6 +74,11 @@ const NoteCreator = () => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
+          className="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:shadow-lg transition-shadow"
+        />
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
           className="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:shadow-lg transition-shadow"
         />
         <button
