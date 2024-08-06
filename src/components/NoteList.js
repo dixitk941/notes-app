@@ -7,6 +7,7 @@ import './NoteList.css';
 const NoteList = () => {
   const [files, setFiles] = useState([]);
   const [error, setError] = useState('');
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchFiles = async (userId) => {
@@ -26,7 +27,11 @@ const NoteList = () => {
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        setUser(user);
         fetchFiles(user.uid);
+      } else {
+        setUser(null);
+        setFiles([]);
       }
     });
 
@@ -34,16 +39,31 @@ const NoteList = () => {
   }, []);
 
   return (
+    <div>   
+      <h2 className="saved-files-heading">Saved Files</h2>
+
+    
     <div className="note-list">
       {error && <p className="error">{error}</p>}
-      {files.map((file, index) => (
-        <div key={index} className="note-item">
-          <h3>{file.category} - {file.subcategory}</h3>
-          <p>{file.content}</p>
-          <a href={file.fileURL} className="download-button" download>Download</a>
-        </div>
-      ))}
+      {user ? (
+        files.length > 0 ? (
+          files.map((file, index) => (
+            <div key={index} className="note-item">
+              <h3>{file.category} - {file.subcategory}</h3>
+              <p>{file.content}</p>
+              <a href={file.fileURL} className="download-button" download>Download</a>
+            </div>
+          ))
+        ) : (
+          <p>No files available</p>
+        )
+      ) : (
+        <p>Please login first to see your saved files</p>
+      )}
     </div>
+    </div>
+ 
+
   );
 };
 

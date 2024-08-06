@@ -20,12 +20,20 @@
     --transition: background var(--transition-duration), transform var(--transition-duration), box-shadow var(--transition-duration);
 }
 
+.saved-files-heading {
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
 .note-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     padding: 20px;
     background: var(--background-color);
+    justify-content: center;
 }
 
 .note-item {
@@ -36,6 +44,7 @@
     padding: 20px;
     transition: var(--transition);
     color: var(--text-color);
+    max-width: 300px;
 }
 
 .note-item:hover {
@@ -58,8 +67,15 @@
     font-size: var(--download-button-font-size);
     text-decoration: none;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .download-button:hover {
     background: var(--download-button-hover-background);
+}
+
+.error {
+    color: red;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
 }
