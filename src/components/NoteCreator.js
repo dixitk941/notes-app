@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import './NoteCreator.css';
+import { useNavigate } from 'react-router-dom';
+import LoginModal from './LoginModal'; // Import the LoginModal component
 
 const NoteCreator = () => {
   const [category, setCategory] = useState('');
@@ -14,9 +16,36 @@ const NoteCreator = () => {
     Work: [{ name: 'Meeting' }, { name: 'Project' }],
     Personal: [{ name: 'Diary' }, { name: 'Goals' }],
   });
+  const [user, setUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleLoginRedirect = () => {
+      setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+      setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!user) {
+      setShowModal(true);
+      return;
+    }
+
     try {
       const storage = getStorage();
       let fileURL = '';
@@ -43,6 +72,8 @@ const NoteCreator = () => {
       setMessage('Error saving note.');
     }
   };
+
+
 
   return (
     <div className="note-creator">
@@ -89,6 +120,18 @@ const NoteCreator = () => {
         </button>
       </form>
       {message && <p className="mt-4 text-primary">{message}</p>}
+      {showModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setShowModal(false)}>&times;</span>
+            <p>You must be logged in to save a note.</p>
+            <button onClick={handleLoginRedirect} className="login-button">Login</button>
+            {isModalOpen && <LoginModal onClose={handleCloseModal} />}
+          </div>
+          
+        </div>
+        
+      )}
     </div>
   );
 };
