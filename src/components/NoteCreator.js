@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
 import './NoteCreator.css';
 import { useNavigate } from 'react-router-dom';
 import LoginModal from './LoginModal';
@@ -51,15 +52,26 @@ const NoteCreator = () => {
     try {
       const storage = getStorage();
       const storageRef = ref(storage, `uploads/${user.uid}/${file.name}`);
+      console.log('Uploading file...');
       await uploadBytes(storageRef, file);
       const fileURL = await getDownloadURL(storageRef);
+      console.log('File uploaded successfully. URL:', fileURL);
 
-      // Save note details to your database here
-      // Example: saveNoteToDatabase({ category, subcategory, content, fileURL });
+      // Save note details to Firestore
+      const docRef = await addDoc(collection(db, 'notes'), {
+        userId: user.uid,
+        category,
+        subcategory,
+        content,
+        fileURL,
+        createdAt: new Date(),
+      });
 
+      console.log('Note created with ID:', docRef.id);
       setMessage('Note created successfully!');
       navigate('/notes'); // Redirect to notes page
     } catch (error) {
+      console.error('Error creating note:', error);
       setMessage(`Error creating note: ${error.message}`);
     }
   };
