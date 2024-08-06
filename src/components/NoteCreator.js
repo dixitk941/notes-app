@@ -4,7 +4,7 @@ import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import './NoteCreator.css';
 import { useNavigate } from 'react-router-dom';
-import LoginModal from './LoginModal'; // Import the LoginModal component
+import LoginModal from './LoginModal';
 
 const NoteCreator = () => {
   const [category, setCategory] = useState('');
@@ -17,18 +17,8 @@ const NoteCreator = () => {
     Personal: [{ name: 'Diary' }, { name: 'Goals' }],
   });
   const [user, setUser] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleLoginRedirect = () => {
-      setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-      setIsModalOpen(false);
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -38,51 +28,49 @@ const NoteCreator = () => {
     return () => unsubscribe();
   }, []);
 
+  const handleLoginSuccess = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!user) {
-      setShowModal(true);
+      setIsModalOpen(true);
+      return;
+    }
+
+    if (!file) {
+      setMessage('Please select a file to upload.');
       return;
     }
 
     try {
       const storage = getStorage();
-      let fileURL = '';
+      const storageRef = ref(storage, `uploads/${user.uid}/${file.name}`);
+      await uploadBytes(storageRef, file);
+      const fileURL = await getDownloadURL(storageRef);
 
-      if (file) {
-        const storageRef = ref(storage, `uploads/${file.name}`);
-        await uploadBytes(storageRef, file);
-        fileURL = await getDownloadURL(storageRef);
-      }
+      // Save note details to your database here
+      // Example: saveNoteToDatabase({ category, subcategory, content, fileURL });
 
-      // Save note data along with fileURL if available
-      const noteData = {
-        category,
-        subcategory,
-        content,
-        fileURL,
-      };
-
-      // Save noteData to your database
-      console.log('Note saved:', noteData);
-      setMessage('Note saved successfully!');
+      setMessage('Note created successfully!');
+      navigate('/notes'); // Redirect to notes page
     } catch (error) {
-      console.error('Error saving note:', error);
-      setMessage('Error saving note.');
+      setMessage(`Error creating note: ${error.message}`);
     }
   };
 
-
-
   return (
     <div className="note-creator">
-      <form onSubmit={handleSubmit} className="w-full p-6 bg-white rounded-lg shadow-md">
+      <form onSubmit={handleSubmit}>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           required
-          className="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:shadow-lg transition-shadow"
         >
           <option value="">Select Category</option>
           {Object.keys(categories).map((cat) => (
@@ -93,7 +81,6 @@ const NoteCreator = () => {
           value={subcategory}
           onChange={(e) => setSubcategory(e.target.value)}
           required
-          className="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:shadow-lg transition-shadow"
         >
           <option value="">Select Subcategory</option>
           {category && categories[category].map((sub) => (
@@ -105,33 +92,18 @@ const NoteCreator = () => {
           value={content}
           onChange={(e) => setContent(e.target.value)}
           required
-          className="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:shadow-lg transition-shadow"
         />
         <input
           type="file"
           onChange={(e) => setFile(e.target.files[0])}
-          className="w-full p-3 mb-4 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:shadow-lg transition-shadow"
+          required
         />
-        <button
-          type="submit"
-          className="w-full p-3 bg-gradient-to-r from-primary to-primary-hover text-white rounded-lg shadow-lg transform transition-transform hover:translate-y-1 hover:shadow-xl"
-        >
-          Save Note
+        <button type="submit">
+          Submit
         </button>
       </form>
-      {message && <p className="mt-4 text-primary">{message}</p>}
-      {showModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setShowModal(false)}>&times;</span>
-            <p>You must be logged in to save a note.</p>
-            <button onClick={handleLoginRedirect} className="login-button">Login</button>
-            {isModalOpen && <LoginModal onClose={handleCloseModal} />}
-          </div>
-          
-        </div>
-        
-      )}
+      {message && <p className="message">{message}</p>}
+      {isModalOpen && <LoginModal onClose={handleCloseModal} onLoginSuccess={handleLoginSuccess} />}
     </div>
   );
 };
